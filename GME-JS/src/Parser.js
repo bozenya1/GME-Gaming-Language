@@ -60,7 +60,41 @@ class Parser{
         }
     }
     Expression(){
-        return this.Literal()
+        return this.AdditiveExpression();
+    }
+    AdditiveExpression(){
+        return this._BinaryExpression('MultiplicativeExpression', 'ADDITIVE_OPERATOR')
+    }
+    MultiplicativeExpression(){
+    return this._BinaryExpression('PrimaryExpression', 'MULTIPLICATIVE_OPERATOR')
+    }
+    PrimaryExpression(){
+        switch (this._lookahead.type){
+            case '(': 
+                return this.ParenthesizedExpression();
+            default:
+                return this.Literal();
+        }
+    }
+    _BinaryExpression(Expression, TokenValue){
+        let left = this[Expression]();
+        while (this._lookahead.type == TokenValue){
+            const operator = this._eat(TokenValue).value;
+            const right = this[Expression]();
+            left = {
+                type: 'BinaryExpression',
+                operator,
+                left,
+                right
+            }
+        }
+        return left
+    }
+    ParenthesizedExpression(){
+        this._eat('(');
+        const expression = this.Expression();
+        this._eat(')');
+        return expression;
     }
     Literal(){
         switch(this._lookahead.type){

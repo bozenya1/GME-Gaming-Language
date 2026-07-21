@@ -13,14 +13,18 @@ const spec = [
     [/^{/, '{'],
     [/^}/, '}'],
 
+    //idk, dauiwbaubsdkjabwdaisu
+    [/^\(/, '('],
+    [/^\)/, ')'],
+
     //type of data
     [/^\d+/, 'NUMBER'],
     [/^"[^"]*"/, 'STRING'],
     [/^'[^']*'/, 'STRING'], 
 
     //BinaryExpression
-    [/^+/, '+'],
-    [/^-/, '-']
+    [/^[+\-]/, 'ADDITIVE_OPERATOR'],
+    [/^[*\/]/, 'MULTIPLICATIVE_OPERATOR']
 ];
 
 class Tokenizer{
